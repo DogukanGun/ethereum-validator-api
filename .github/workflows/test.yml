@@ -1,0 +1,32 @@
+name: Go Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
+
+    - name: Create test env file
+      run: |
+        echo "ETH_RPC=${{ secrets.ETH_RPC }}" > tests/.env
+
+    - name: Install dependencies
+      run: go mod download
+
+    - name: Run tests
+      run: go test -v ./tests/...
+      env:
+        ETH_RPC: ${{ secrets.ETH_RPC }} 
