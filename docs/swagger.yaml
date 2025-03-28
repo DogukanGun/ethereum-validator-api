@@ -1,0 +1,60 @@
+info:
+  contact: {}
+paths:
+  /blockreward/{slot}:
+    get:
+      description: Get the block reward for a given slot
+      parameters:
+      - description: Slot Number
+        in: path
+        name: slot
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get Block Reward
+      tags:
+      - block
+  /syncduties/{slot}:
+    get:
+      description: Get the sync duties for a given slot
+      parameters:
+      - description: Slot Number
+        in: path
+        name: slot
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get Sync Duties
+      tags:
+      - sync
+swagger: "2.0"

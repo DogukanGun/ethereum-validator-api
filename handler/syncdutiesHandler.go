@@ -6,6 +6,14 @@ import (
 	"strconv"
 )
 
+// @Summary Get Sync Duties
+// @Description Get the sync duties for a given slot
+// @Tags sync
+// @Param slot path int true "Slot Number"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400 {object} map[string]interface{}
+// @Failure 404 {object} map[string]interface{}
+// @Router /syncduties/{slot} [get]
 func (h *Handler) GetSyncDuties(c *gin.Context) {
 	slotParam := c.Param("slot")
 	slot, err := strconv.Atoi(slotParam)

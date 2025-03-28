@@ -6,6 +6,14 @@ import (
 	"strconv"
 )
 
+// @Summary Get Block Reward
+// @Description Get the block reward for a given slot
+// @Tags block
+// @Param slot path int true "Slot Number"
+// @Success 200 {object} map[string]interface{}
+// @Failure 400 {object} map[string]interface{}
+// @Failure 404 {object} map[string]interface{}
+// @Router /blockreward/{slot} [get]
 func (h *Handler) GetBlockReward(c *gin.Context) {
 	slotParam := c.Param("slot")
 	slot, err := strconv.Atoi(slotParam)
