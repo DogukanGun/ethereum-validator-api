@@ -1,12 +1,25 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "API that provides Ethereum validator information including sync committee duties and block rewards.",
+        "title": "Ethereum Validator API",
+        "contact": {
+            "name": "API Support",
+            "url": "https://github.com/yourusername/ethereum-validator-api",
+            "email": "your-email@example.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0"
     },
+    "host": "localhost:3001",
+    "basePath": "/",
     "paths": {
         "/blockreward/{slot}": {
             "get": {
-                "description": "Get the block reward for a given slot",
+                "description": "Get the block reward and MEV information for a given slot",
                 "tags": [
                     "block"
                 ],
@@ -22,24 +35,27 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Returns block reward info including MEV status and reward in GWEI",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/handler.BlockRewardResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Invalid slot number or future slot",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Slot does not exist",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/handler.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     }
                 }
@@ -47,7 +63,7 @@
         },
         "/syncduties/{slot}": {
             "get": {
-                "description": "Get the sync duties for a given slot",
+                "description": "Get the sync committee duties for validators at a given slot in the PoS chain",
                 "tags": [
                     "sync"
                 ],
@@ -63,26 +79,96 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Returns list of validator public keys with sync committee duties",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/handler.SyncDutiesResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Invalid slot number or slot too far in future",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Slot does not exist",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/handler.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handler.BlockRewardResponse": {
+            "type": "object",
+            "properties": {
+                "block_info": {
+                    "type": "object",
+                    "properties": {
+                        "is_mev_boost": {
+                            "type": "boolean",
+                            "example": true
+                        },
+                        "proposer_payment": {
+                            "type": "integer",
+                            "example": 123456
+                        }
+                    }
+                },
+                "reward": {
+                    "description": "reward in GWEI",
+                    "type": "integer",
+                    "example": 123456
+                },
+                "status": {
+                    "description": "mev or vanilla",
+                    "type": "string",
+                    "example": "mev"
+                }
+            }
+        },
+        "handler.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "Internal server error"
+                }
+            }
+        },
+        "handler.SyncDutiesResponse": {
+            "type": "object",
+            "properties": {
+                "sync_info": {
+                    "type": "object",
+                    "properties": {
+                        "committee_size": {
+                            "type": "integer",
+                            "example": 32
+                        },
+                        "sync_period": {
+                            "type": "integer",
+                            "example": 123
+                        }
+                    }
+                },
+                "validators": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "['0x1234...'",
+                        "'0x5678...']"
+                    ]
                 }
             }
         }

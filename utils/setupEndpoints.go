@@ -7,15 +7,7 @@ import (
 	"os"
 )
 
-// SetupEndpoints configures and initializes all the API endpoints for the Ethereum validator service.
-// It creates a new Ethereum service instance and sets up the HTTP routes.
-//
-// Parameters:
-//   - router: A pointer to the Gin router engine to register the routes
-//
-// Returns:
-//   - error: Returns an error if there's any issue initializing the Ethereum service,
-//     nil otherwise
+// SetupEndpoints configures the API endpoints for the Ethereum validator service
 func SetupEndpoints(router *gin.Engine) error {
 	rpcURL := os.Getenv("ETH_RPC")
 	ethService, err := service.NewEthereumService(rpcURL)

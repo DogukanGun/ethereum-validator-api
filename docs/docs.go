@@ -9,7 +9,15 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "contact": {
+            "name": "API Support",
+            "url": "https://github.com/yourusername/ethereum-validator-api",
+            "email": "your-email@example.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -17,7 +25,7 @@ const docTemplate = `{
     "paths": {
         "/blockreward/{slot}": {
             "get": {
-                "description": "Get the block reward for a given slot",
+                "description": "Get the block reward and MEV information for a given slot",
                 "tags": [
                     "block"
                 ],
@@ -33,24 +41,27 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Returns block reward info including MEV status and reward in GWEI",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/handler.BlockRewardResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Invalid slot number or future slot",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Slot does not exist",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/handler.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     }
                 }
@@ -58,7 +69,7 @@ const docTemplate = `{
         },
         "/syncduties/{slot}": {
             "get": {
-                "description": "Get the sync duties for a given slot",
+                "description": "Get the sync committee duties for validators at a given slot in the PoS chain",
                 "tags": [
                     "sync"
                 ],
@@ -74,26 +85,96 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Returns list of validator public keys with sync committee duties",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/handler.SyncDutiesResponse"
                         }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Invalid slot number or slot too far in future",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     },
                     "404": {
-                        "description": "Not Found",
+                        "description": "Slot does not exist",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/handler.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.ErrorResponse"
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handler.BlockRewardResponse": {
+            "type": "object",
+            "properties": {
+                "block_info": {
+                    "type": "object",
+                    "properties": {
+                        "is_mev_boost": {
+                            "type": "boolean",
+                            "example": true
+                        },
+                        "proposer_payment": {
+                            "type": "integer",
+                            "example": 123456
+                        }
+                    }
+                },
+                "reward": {
+                    "description": "reward in GWEI",
+                    "type": "integer",
+                    "example": 123456
+                },
+                "status": {
+                    "description": "mev or vanilla",
+                    "type": "string",
+                    "example": "mev"
+                }
+            }
+        },
+        "handler.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "Internal server error"
+                }
+            }
+        },
+        "handler.SyncDutiesResponse": {
+            "type": "object",
+            "properties": {
+                "sync_info": {
+                    "type": "object",
+                    "properties": {
+                        "committee_size": {
+                            "type": "integer",
+                            "example": 32
+                        },
+                        "sync_period": {
+                            "type": "integer",
+                            "example": 123
+                        }
+                    }
+                },
+                "validators": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "['0x1234...'",
+                        "'0x5678...']"
+                    ]
                 }
             }
         }
@@ -102,12 +183,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
-	BasePath:         "",
+	Version:          "1.0",
+	Host:             "localhost:3001",
+	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "Ethereum Validator API",
+	Description:      "API that provides Ethereum validator information including sync committee duties and block rewards.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

@@ -5,14 +5,7 @@ import (
 	"log"
 )
 
-// InitializeENV loads environment variables from the specified .env file.
-// It returns true if the file was successfully loaded, false otherwise.
-//
-// Parameters:
-//   - envFileName: The path to the .env file to be loaded
-//
-// Returns:
-//   - bool: true if environment variables were loaded successfully, false if there was an error
+// InitializeENV loads environment variables from the specified .env file
 func InitializeENV(envFileName string) bool {
 	// First check if env file exists & load the file if it exists
 	dotenvErr := godotenv.Load(envFileName)

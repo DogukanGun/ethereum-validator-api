@@ -1,9 +1,67 @@
+basePath: /
+definitions:
+  handler.BlockRewardResponse:
+    properties:
+      block_info:
+        properties:
+          is_mev_boost:
+            example: true
+            type: boolean
+          proposer_payment:
+            example: 123456
+            type: integer
+        type: object
+      reward:
+        description: reward in GWEI
+        example: 123456
+        type: integer
+      status:
+        description: mev or vanilla
+        example: mev
+        type: string
+    type: object
+  handler.ErrorResponse:
+    properties:
+      error:
+        example: Internal server error
+        type: string
+    type: object
+  handler.SyncDutiesResponse:
+    properties:
+      sync_info:
+        properties:
+          committee_size:
+            example: 32
+            type: integer
+          sync_period:
+            example: 123
+            type: integer
+        type: object
+      validators:
+        example:
+        - '[''0x1234...'''
+        - '''0x5678...'']'
+        items:
+          type: string
+        type: array
+    type: object
+host: localhost:3001
 info:
-  contact: {}
+  contact:
+    email: your-email@example.com
+    name: API Support
+    url: https://github.com/yourusername/ethereum-validator-api
+  description: API that provides Ethereum validator information including sync committee
+    duties and block rewards.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: Ethereum Validator API
+  version: "1.0"
 paths:
   /blockreward/{slot}:
     get:
-      description: Get the block reward for a given slot
+      description: Get the block reward and MEV information for a given slot
       parameters:
       - description: Slot Number
         in: path
@@ -12,26 +70,29 @@ paths:
         type: integer
       responses:
         "200":
-          description: OK
+          description: Returns block reward info including MEV status and reward in
+            GWEI
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/handler.BlockRewardResponse'
         "400":
-          description: Bad Request
+          description: Invalid slot number or future slot
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/handler.ErrorResponse'
         "404":
-          description: Not Found
+          description: Slot does not exist
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
       summary: Get Block Reward
       tags:
       - block
   /syncduties/{slot}:
     get:
-      description: Get the sync duties for a given slot
+      description: Get the sync committee duties for validators at a given slot in
+        the PoS chain
       parameters:
       - description: Slot Number
         in: path
@@ -40,20 +101,21 @@ paths:
         type: integer
       responses:
         "200":
-          description: OK
+          description: Returns list of validator public keys with sync committee duties
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/handler.SyncDutiesResponse'
         "400":
-          description: Bad Request
+          description: Invalid slot number or slot too far in future
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/handler.ErrorResponse'
         "404":
-          description: Not Found
+          description: Slot does not exist
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
       summary: Get Sync Duties
       tags:
       - sync
