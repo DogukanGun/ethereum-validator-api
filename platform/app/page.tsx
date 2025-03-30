@@ -22,11 +22,11 @@ interface ApiError {
   error: string;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://sf-api.dogukangun.de/';
 
 const getApiUrl = () => {
   if (typeof window !== 'undefined') {
-    return 'http://localhost:3001';
+    return 'https://sf-api.dogukangun.de/';
   }
   return API_URL;
 };
