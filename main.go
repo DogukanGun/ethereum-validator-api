@@ -36,11 +36,12 @@ func main() {
 		corsOrigin = "https://sf.dogukangun.de"
 	}
 	localCorsOrigin := "http://localhost:3003"
+	apiDomain := "https://sf-api.dogukangun.de"
 	
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{corsOrigin,localCorsOrigin},
-		AllowMethods:     []string{"GET", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		AllowOrigins:     []string{corsOrigin, localCorsOrigin, apiDomain, "https://sf.dogukangun.de"},
+		AllowMethods:     []string{"GET", "POST", "OPTIONS", "HEAD"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization", "X-Requested-With"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		MaxAge:           12 * 60 * 60,
