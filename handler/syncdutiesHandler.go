@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"ethereum-validator-api/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -47,7 +48,7 @@ func (h *Handler) GetSyncDuties(c *gin.Context) {
 
 	// Calculate sync period
 	syncPeriod := slot / 8192 // Sync committee period changes every 256 epochs (8192 slots)
-	
+
 	// Create response object
 	response := SyncDutiesResponse{
 		Validators: validators,

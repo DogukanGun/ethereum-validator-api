@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"ethereum-validator-api/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"

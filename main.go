@@ -33,11 +33,12 @@ func main() {
 	// Set up CORS with proper configuration
 	corsOrigin := os.Getenv("CORS_ORIGIN")
 	if corsOrigin == "" {
-		corsOrigin = "http://localhost:3000"
+		corsOrigin = "https://sf.dogukangun.de"
 	}
+	localCorsOrigin := "http://localhost:3003"
 	
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{corsOrigin},
+		AllowOrigins:     []string{corsOrigin,localCorsOrigin},
 		AllowMethods:     []string{"GET", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -61,10 +62,10 @@ func main() {
 	}
 	
 	// Start the server
-	log.Println("Server starting at http://localhost:3001")
-	log.Println("Swagger UI available at http://localhost:3001/swagger/index.html")
+	log.Println("Server starting at http://localhost:3004")
+	log.Println("Swagger UI available at http://localhost:3004/swagger/index.html")
 	
-	if err := router.Run(":3001"); err != nil {
+	if err := router.Run(":3004"); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }
