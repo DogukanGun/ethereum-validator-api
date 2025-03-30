@@ -34,7 +34,7 @@ services:
     ports:
       - "3003:3003"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:3004
+      - NEXT_PUBLIC_API_URL=https://sf-api.dogukangun.de
     networks:
       - app-network
     depends_on:
