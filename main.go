@@ -4,6 +4,7 @@ import (
 	_ "ethereum-validator-api/docs" // This is important - imports the swagger docs
 	"ethereum-validator-api/utils"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -29,6 +30,12 @@ import (
 func main() {
 	utils.InitializeENV(".env")
 	router := gin.Default()
+
+	// Enable pprof endpoints (only in development/localhost)
+	if gin.Mode() != gin.ReleaseMode {
+		pprof.Register(router)
+		log.Println("pprof endpoints enabled at http://localhost:3004/debug/pprof/")
+	}
 
 	// Set up CORS with proper configuration
 	corsOrigin := os.Getenv("CORS_ORIGIN")
