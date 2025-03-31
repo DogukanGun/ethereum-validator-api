@@ -1,0 +1,98 @@
+{
+  "info": {
+    "name": "Ethereum Validator API",
+    "description": "Collection for testing Ethereum Validator API endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Sync Committee Duties",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/syncduties/4700000",
+          "host": ["{{baseUrl}}"],
+          "path": ["syncduties", "4700000"]
+        },
+        "description": "Get sync committee duties for a specific slot"
+      },
+      "response": [
+        {
+          "name": "Successful Response",
+          "originalRequest": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/syncduties/4700000"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "body": {
+            "validators": [
+              "0x1234...",
+              "0x5678..."
+            ],
+            "sync_info": {
+              "sync_period": 123,
+              "committee_size": 512
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Block Rewards",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/blockreward/4700000",
+          "host": ["{{baseUrl}}"],
+          "path": ["blockreward", "4700000"]
+        },
+        "description": "Get block rewards for a specific slot"
+      },
+      "response": [
+        {
+          "name": "Successful Response",
+          "originalRequest": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/blockreward/4700000"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "body": {
+            "status": "mev",
+            "reward": 123456,
+            "block_info": {
+              "proposer_payment": 100000,
+              "is_mev_boost": true
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://sf-api.dogukangun.de",
+      "type": "string"
+    }
+  ]
+} 
