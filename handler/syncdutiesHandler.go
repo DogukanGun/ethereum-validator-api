@@ -8,13 +8,13 @@ import (
 	"strconv"
 )
 
-// @Summary Get Sync Duties
-// @Description Get the sync committee duties for validators at a given slot in the PoS chain
+// @Summary Get Sync Committee Duties
+// @Description Retrieves the sync committee duties for validators at a given slot in the Ethereum Proof of Stake chain
 // @Tags sync
-// @Param slot path int true "Slot Number"
-// @Success 200 {object} SyncDutiesResponse "Returns list of validator public keys with sync committee duties"
+// @Param slot path int true "Slot number in the Beacon Chain"
+// @Success 200 {object} SyncDutiesResponse "Returns list of validator public keys and sync committee information"
 // @Failure 400 {object} ErrorResponse "Invalid slot number or slot too far in future"
-// @Failure 404 {object} ErrorResponse "Slot does not exist"
+// @Failure 404 {object} ErrorResponse "Slot not found in chain"
 // @Failure 500 {object} ErrorResponse "Internal server error"
 // @Router /syncduties/{slot} [get]
 func (h *Handler) GetSyncDuties(c *gin.Context) {

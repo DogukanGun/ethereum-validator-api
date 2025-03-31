@@ -8,13 +8,13 @@ import (
 	"strconv"
 )
 
-// @Summary Get Block Reward
-// @Description Get the block reward and MEV information for a given slot
+// @Summary Get Block Rewards
+// @Description Retrieves block reward information including MEV status and proposer payments for a given slot
 // @Tags block
-// @Param slot path int true "Slot Number"
-// @Success 200 {object} BlockRewardResponse "Returns block reward info including MEV status and reward in GWEI"
+// @Param slot path int true "Slot number in the Beacon Chain"
+// @Success 200 {object} BlockRewardResponse "Returns block reward details including MEV status and reward amounts in GWEI"
 // @Failure 400 {object} ErrorResponse "Invalid slot number or future slot"
-// @Failure 404 {object} ErrorResponse "Slot does not exist"
+// @Failure 404 {object} ErrorResponse "Slot not found in chain"
 // @Failure 500 {object} ErrorResponse "Internal server error"
 // @Router /blockreward/{slot} [get]
 func (h *Handler) GetBlockReward(c *gin.Context) {

@@ -1,8 +1,8 @@
 # Ethereum Validator API
 
-A comprehensive API service for querying Ethereum validator information, including sync committee duties and block rewards. This project includes both a backend API service written in Go and a modern frontend interface built with Next.js.
+A production-ready API service for querying Ethereum validator information, including sync committee duties and block rewards. This project demonstrates my ability to build scalable, maintainable blockchain infrastructure using modern development practices.
 
-## Live Demo
+## Project Overview
 
 You can test the application using either the frontend interface or direct API calls:
 
@@ -10,15 +10,18 @@ You can test the application using either the frontend interface or direct API c
 - **API Endpoint**: [https://sf-api.dogukangun.de](https://sf-api.dogukangun.de)
 - **API Documentation**: [https://sf-api.dogukangun.de/swagger/index.html](https://sf-api.dogukangun.de/swagger/index.html)
 
-The frontend interface provides an intuitive way to test the API endpoints without writing any code. Simply enter a slot number and click "Fetch Data" to see the results.
+Test the application:
+- Frontend: [https://sf.dogukangun.de](https://sf.dogukangun.de)
+- API: [https://sf-api.dogukangun.de](https://sf-api.dogukangun.de)
+- API Documentation: [https://sf-api.dogukangun.de/swagger/index.html](https://sf-api.dogukangun.de/swagger/index.html)
 
-## Project Architecture
+## Architecture
 
 The project follows a clean, modular architecture:
 
 ```
 ethereum-validator-api/
-├── handler/                # HTTP handlers and request/response types
+├── handler/                # HTTP request handlers
 │   ├── blockrewardHandler.go
 │   ├── syncdutiesHandler.go
 │   ├── handler.go
@@ -26,7 +29,7 @@ ethereum-validator-api/
 ├── service/               # Business logic layer
 │   ├── ethereumService.go
 │   └── ethereumService_test.go
-├── utils/                 # Utility functions
+├── utils/                 # Shared utilities
 │   ├── env.go
 │   └── setupEndpoints.go
 ├── tests/                 # Integration tests
@@ -34,30 +37,29 @@ ethereum-validator-api/
 │   └── env_utils_test.go
 ├── platform/              # Frontend application
 │   ├── app/              
-│   │   ├── page.tsx      # Main validator explorer interface
-│   │   ├── layout.tsx    # App layout and metadata
+│   │   ├── page.tsx      # Main interface
+│   │   ├── layout.tsx    # App layout
 │   │   └── globals.css
 │   ├── public/           
 │   └── package.json
-├── main.go               # Application entry point
+├── main.go               # Application entry
 ├── go.mod               # Go dependencies
-├── docker-compose.yml   # Docker configuration
-└── Dockerfile           # API service Dockerfile
-
+├── docker-compose.yml   # Docker config
+└── Dockerfile           # API service build
 ```
 
 ## Design Choices
 
 ### Backend Architecture
 1. **Clean Architecture**
-   - Separation of concerns with distinct layers (handlers, services, utils)
-   - Clear dependency flow from outer layers (handlers) to inner layers (services)
-   - Easy to test and maintain with well-defined interfaces
+   - Clear separation of concerns (handlers, services, utils)
+   - Dependency flow from outer to inner layers
+   - Testable and maintainable design
 
 2. **Handler Layer**
-   - Handles HTTP requests and response formatting
-   - Input validation and error handling
-   - Clear separation between HTTP concerns and business logic
+   - Request/response handling
+   - Input validation
+   - Error management
 
 3. **Service Layer**
    - Contains core business logic for Ethereum interactions
@@ -70,10 +72,10 @@ ethereum-validator-api/
    - Reusable helper functions
 
 ### Frontend Architecture
-1. **Next.js App Router**
-   - Modern React architecture with server components
-   - Optimized performance with automatic code splitting
-
+- Next.js App Router for modern React patterns
+- Server components for optimal performance
+- TypeScript for type safety
+- TailwindCSS for responsive design
 
 ## API Endpoints
 

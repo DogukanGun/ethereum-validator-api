@@ -14,16 +14,16 @@ import (
 
 // @title           Ethereum Validator API
 // @version         1.0
-// @description     API that provides Ethereum validator information including sync committee duties and block rewards.
+// @description     A production-ready API service for querying Ethereum validator information, including sync committee duties and block rewards.
 
-// @contact.name   API Support
-// @contact.url    https://github.com/yourusername/ethereum-validator-api
-// @contact.email  your-email@example.com
+// @contact.name   Dogukan Gundogan
+// @contact.url    https://github.com/dogukangundogan/ethereum-validator-api
+// @contact.email  dogukangundogan@gmail.com
 
 // @license.name  MIT
 // @license.url   https://opensource.org/licenses/MIT
 
-// @host      localhost:3001
+// @host      localhost:3004
 // @BasePath  /
 
 func main() {
