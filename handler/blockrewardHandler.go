@@ -52,7 +52,7 @@ func (h *Handler) GetBlockReward(c *gin.Context) {
 		Reward: reward.Reward.Int64(),
 	}
 	response.BlockInfo.ProposerPayment = reward.Reward.Int64()
-	response.BlockInfo.IsMevBoost = reward.Status == "mev"
+	response.BlockInfo.IsMEVBoost = reward.Status == "mev"
 
 	c.JSON(http.StatusOK, response)
 }
