@@ -27,6 +27,6 @@ jobs:
       run: go mod download
 
     - name: Run tests
-      run: go test -v ./tests/...
+      run: go test -v ./tests/ethereumService_test.go ./tests/env_utils_test.go
       env:
         ETH_RPC: ${{ secrets.ETH_RPC }} 

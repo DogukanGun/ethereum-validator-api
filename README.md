@@ -34,6 +34,7 @@ ethereum-validator-api/
 │   └── setupEndpoints.go
 ├── tests/                 # Integration tests
 │   ├── ethereumService_test.go
+│   ├── load_test.go
 │   └── env_utils_test.go
 ├── platform/              # Frontend application
 │   ├── app/              
@@ -123,6 +124,8 @@ Response:
 - Go 1.21+
 - Node.js v18+
 - Docker and Docker Compose (optional)
+- hey (for load testing)
+- graphviz (for pprof visualization)
 
 ### Method 1: Local Development
 
@@ -224,6 +227,8 @@ You can also make direct API calls using curl or any HTTP client:
 - **go-ethereum**: Ethereum client implementation
 - **swagger/swag**: API documentation
 - **testify**: Testing framework
+- **gin-contrib/pprof**: Performance profiling
+- **hey**: Load testing tool
 
 ### Frontend
 - **Next.js 15.2.4**: React framework
